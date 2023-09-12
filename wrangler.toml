@@ -1,0 +1,13 @@
+name = "panda-img"
+main = "src/index.js"
+compatibility_date = "2023-09-04"
+
+[[kv_namespaces]]
+binding = "LINK_STORAGE"
+id = "d4ed0bdeb0e24bdda82b0a833fd76378"
+preview_id = "d4ed0bdeb0e24bdda82b0a833fd76378"
+
+[[r2_buckets]]
+binding = "IMG_STORAGE"
+bucket_name = "tabbypage"
+preview_bucket_name = "tabbypage"
