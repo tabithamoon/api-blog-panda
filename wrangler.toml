@@ -1,4 +1,4 @@
-name = "panda-img"
+name = "blog-panda-img"
 main = "src/index.js"
 compatibility_date = "2023-09-04"
 
