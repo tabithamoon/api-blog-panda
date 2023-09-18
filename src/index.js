@@ -1,38 +1,36 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
-
 export default {
 	async fetch(request, env, ctx) {
 		switch(request.method){
 			case 'GET':
-				let imgnum = Math.ceil(Math.random() * 2).toString().padStart(4, '0')
-				let credit = await env.LINK_STORAGE.get(`panda-${imgnum}`)
+				let imgcount = await env.DB.prepare(
+					'SELECT COUNT(*) AS total FROM PandaImg'
+				).first('total');
+
+				let imgnum = Math.ceil(Math.random() * imgcount)
+
+				let imgdata = await env.DB.prepare(
+					`SELECT * FROM PandaImg WHERE Id = ${imgnum}`
+				).first();
 
 				const data = {
-					link: `https://files.tabby.page/pandas/panda-${imgnum}.jpg`,
-					author: credit
+					link: imgdata.Link,
+					author: imgdata.Author,
+					source: imgdata.Source
 				};
 
 				return new Response(JSON.stringify(data, null, 2), {
 					headers: {
-					  "content-type": "application/json;charset=UTF-8",
+						"content-type": "application/json;charset=UTF-8",
 					},
-				  });
+				});
 
 			default:
 				return new Response('Method Not Allowed', {
 					status: 405,
 					headers: {
-					  Allow: 'GET',
+						Allow: 'GET',
 					},
-				  });
+				});
 		}
 	},
 };
